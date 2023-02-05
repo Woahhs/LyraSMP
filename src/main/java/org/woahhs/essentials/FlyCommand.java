@@ -8,6 +8,8 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.woahhs.utils.Chat;
 
+import static org.woahhs.Plugin.prefix;
+
 public class FlyCommand implements CommandExecutor {
 
     private Chat chat = new Chat();
@@ -28,17 +30,17 @@ public class FlyCommand implements CommandExecutor {
             case 0 -> {
                 Player player = (Player) sender;
                 player.setAllowFlight(!player.getAllowFlight());
-                player.sendMessage(chat.translateChat("&b&lLyra >> &fYour flight is now " + player.getAllowFlight()));
+                player.sendMessage(chat.translateChat(prefix +" &fYour flight is now " + player.getAllowFlight()));
             }
             case 1 -> {
                 Player target = Bukkit.getPlayerExact(args[0]);
                 Player player = (Player) sender;
                 target.setAllowFlight(!target.getAllowFlight());
-                target.sendMessage(chat.translateChat("&b&lLyra >> &fYour flight is now " + target.getAllowFlight()));
-                player.sendMessage(chat.translateChat("&b&lLyra >> &f" + target.getName() +"'s flight is now " + target.getAllowFlight()));
+                target.sendMessage(chat.translateChat(prefix + " &fYour flight is now " + target.getAllowFlight()));
+                player.sendMessage(chat.translateChat(prefix + " &f" + target.getName() +"'s flight is now " + target.getAllowFlight()));
             }
             default -> {
-                sender.sendMessage(chat.translateChat("&b&lLyra >> &fUsage /fly | /fly <target>"));
+                sender.sendMessage(chat.translateChat(prefix + " &fUsage /fly | /fly <target>"));
             }
         }
         return false;

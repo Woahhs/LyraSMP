@@ -3,3 +3,4 @@ org\woahhs\utils\Chat.class
 org\woahhs\essentials\GamemodeCommand.class
 org\woahhs\essentials\FlyCommand.class
 org\woahhs\files\ConfigFile.class
+org\woahhs\essentials\HealCommand.class

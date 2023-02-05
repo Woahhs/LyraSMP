@@ -9,6 +9,8 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.woahhs.utils.Chat;
 
+import static org.woahhs.Plugin.prefix;
+
 public class GamemodeCommand implements CommandExecutor {
 
     private Chat chat = new Chat();
@@ -26,7 +28,7 @@ public class GamemodeCommand implements CommandExecutor {
             return true;
         }
         if(args.length > 2 || args.length < 1){
-            sender.sendMessage(chat.translateChat("&b&lLyra >> &cUsage: /gamemode <gamemode> | /gamemode <gamemode> <player>"));
+            sender.sendMessage(chat.translateChat(prefix + " &cUsage: /gamemode <gamemode> | /gamemode <gamemode> <player>"));
             return true;
         }
 
@@ -38,7 +40,7 @@ public class GamemodeCommand implements CommandExecutor {
             Player player = (Player) sender;
             Player target = Bukkit.getPlayerExact(args[1]);
             if(target == null || !target.isOnline()){
-                sender.sendMessage(chat.translateChat("&b&lLyra >> &fThat player isn't online."));
+                sender.sendMessage(chat.translateChat(prefix +" &fThat player isn't online."));
                 return true;
             }
             return setPlayerGamemode(args, player, target);
@@ -47,48 +49,36 @@ public class GamemodeCommand implements CommandExecutor {
     }
 
     private boolean setPlayerGamemode(String[] args, Player player, Player target) {
+        GameMode gameMode = null;
         switch (args[0].toLowerCase()) {
             case "survival", "0", "s" -> {
-                if(player != target){
-                    target.setGameMode(GameMode.SURVIVAL);
-                    target.sendMessage(chat.translateChat("&b&lLyra >> &fYour gamemode is now " + player.getGameMode()));
-                    player.sendMessage(chat.translateChat("&b&lLyra >> &fYou set " + target.getName() +"'s to"));
-                    break;
-                }
-                player.setGameMode(GameMode.SURVIVAL);
-                player.sendMessage(chat.translateChat("&b&lLyra >> &fYour gamemode is now " + player.getGameMode()));
+                gameMode = GameMode.SURVIVAL;
             }
             case "creative", "1", "c" -> {
-                if(player != target){
-                    target.setGameMode(GameMode.CREATIVE);
-                    target.sendMessage(chat.translateChat("&b&lLyra >> &fYour gamemode is now " + player.getGameMode()));
-                    player.sendMessage(chat.translateChat("&b&lLyra >> &fYou set " + target.getName() +"'s to"));
-                    break;
-                }
-                player.setGameMode(GameMode.CREATIVE);
-                player.sendMessage(chat.translateChat("&b&lLyra >> &fYour gamemode is now " + player.getGameMode()));
+                gameMode = GameMode.CREATIVE;
             }
             case "adventure", "2", "a" -> {
-                if(player != target){
-                    target.setGameMode(GameMode.ADVENTURE);
-                    target.sendMessage(chat.translateChat("&b&lLyra >> &fYour gamemode is now " + player.getGameMode()));
-                    player.sendMessage(chat.translateChat("&b&lLyra >> &fYou set " + target.getName() +"'s to"));
-                    break;
-                }
-                player.setGameMode(GameMode.ADVENTURE);
-                player.sendMessage(chat.translateChat("&b&lLyra >> &fYour gamemode is now " + player.getGameMode()));
+                gameMode = GameMode.ADVENTURE;
             }
             case "spectator", "3", "spec" -> {
-                if(player != target){
-                    target.setGameMode(GameMode.SPECTATOR);
-                    target.sendMessage(chat.translateChat("&b&lLyra >> &fYour gamemode is now " + player.getGameMode()));
-                    player.sendMessage(chat.translateChat("&b&lLyra >> &fYou set " + target.getName() +"'s to"));
-                    break;
-                }
-                player.setGameMode(GameMode.SPECTATOR);
-                player.sendMessage(chat.translateChat("&b&lLyra >> &fYour gamemode is now " + player.getGameMode()));
+                gameMode = GameMode.SPECTATOR;
+            }
+            default -> {
+                player.sendMessage(chat.translateChat(prefix + " &cUsage: /gamemode <gamemode> | /gamemode <gamemode> <player>"));
             }
         }
+        if(gameMode == null){
+            player.sendMessage(chat.translateChat(prefix + " &cGamemode is null. Please use an existing Gamemode."));
+            return true;
+        }
+        if(player != target){
+            target.setGameMode(gameMode);
+            target.sendMessage(chat.translateChat(prefix + " &fYour gamemode is now " + player.getGameMode()));
+            player.sendMessage(chat.translateChat(prefix + " &fYou set " + target.getName() +"'s gamemode to " + target.getGameMode()));
+            return true;
+        }
+        player.setGameMode(gameMode);
+        player.sendMessage(chat.translateChat(prefix +" &fYour gamemode is now " + player.getGameMode()));
         return true;
     }
 }

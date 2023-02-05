@@ -6,3 +6,7 @@
       description: Your Basic Fly Command!
     gamemode:
       description: Your Basic Gamemode Command!
+      aliases:
+        - gm
+    heal:
+      description: Your Basic Heal Command!
